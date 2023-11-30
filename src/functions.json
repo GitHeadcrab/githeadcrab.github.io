@@ -898,7 +898,7 @@
             {
                 "name": "Vec",
                 "description": "Create new vector and optionally initializes it to the provided values. A Vec is equivalent to a regular lua table with three numbers.",
-                "tags": ["Vector"],
+                "tags": ["Vec"],
                 "inputs": [
                     {
                         "name": "x",
@@ -931,7 +931,7 @@
             {
                 "name": "VecCopy",
                 "description": "Vectors should never be assigned like regular numbers. Since they are implemented with lua tables assignment means two references pointing to the same data. Use this function instead.",
-                "tags": ["Vector"],
+                "tags": ["Vec"],
                 "inputs": [
                     {
                         "name": "org",
@@ -951,7 +951,7 @@
             {
                 "name": "VecStr",
                 "description": "Returns the string representation of vector",
-                "tags": ["Vector", "String"],
+                "tags": ["Vec", "String"],
                 "inputs": [
                     {
                         "name": "vec",
@@ -971,7 +971,7 @@
             {
                 "name": "VecLength",
                 "description": "",
-                "tags": ["Vector", "Number"],
+                "tags": ["Vec", "Number"],
                 "inputs": [
                     {
                         "name": "vec",
@@ -991,7 +991,7 @@
             {
                 "name": "VecNormalize",
                 "description": "If the input vector is of zero length, the function returns {0,0,1}",
-                "tags": ["Vector"],
+                "tags": ["Vec"],
                 "inputs": [
                     {
                         "name": "vec",
@@ -1011,7 +1011,7 @@
             {
                 "name": "VecScale",
                 "description": "",
-                "tags": ["Vector", "Number"],
+                "tags": ["Vec", "Number"],
                 "inputs": [
                     {
                         "name": "vec",
@@ -1036,7 +1036,7 @@
             {
                 "name": "VecAdd",
                 "description": "",
-                "tags": ["Vector"],
+                "tags": ["Vec"],
                 "inputs": [
                     {
                         "name": "a",
@@ -1061,7 +1061,7 @@
             {
                 "name": "VecSub",
                 "description": "",
-                "tags": ["Vector"],
+                "tags": ["Vec"],
                 "inputs": [
                     {
                         "name": "a",
@@ -1086,7 +1086,7 @@
             {
                 "name": "VecDot",
                 "description": "",
-                "tags": ["Vector", "Number"],
+                "tags": ["Vec", "Number"],
                 "inputs": [
                     {
                         "name": "a",
@@ -1111,7 +1111,7 @@
             {
                 "name": "VecCross",
                 "description": "",
-                "tags": ["Vector"],
+                "tags": ["Vec"],
                 "inputs": [
                     {
                         "name": "a",
@@ -1136,7 +1136,7 @@
             {
                 "name": "VecLerp",
                 "description": "",
-                "tags": ["Vector", "Number"],
+                "tags": ["Vec", "Number"],
                 "inputs": [
                     {
                         "name": "a",
@@ -1225,7 +1225,7 @@
             {
                 "name": "QuatAxisAngle",
                 "description": "Create a quaternion representing a rotation around a specific axis",
-                "tags": ["Quat", "Number", "Vector"],
+                "tags": ["Quat", "Number", "Vec"],
                 "inputs": [
                     {
                         "name": "axis",
@@ -1250,7 +1250,7 @@
             {
                 "name": "QuatEuler",
                 "description": "Create quaternion using euler angle notation. The order of applied rotations uses the \"NASA standard aeroplane\" model:\n\n<ol><li>Rotation around Y axis (yaw or heading)</li><li>Rotation around Z axis (pitch or attitude)</li><li>Rotation around X axis (roll or bank)</li></ol>",
-                "tags": ["Quat", "Number", "Vector"],
+                "tags": ["Quat", "Number", "Vec"],
                 "inputs": [
                     {
                         "name": "x",
