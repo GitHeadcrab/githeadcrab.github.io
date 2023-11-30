@@ -1674,7 +1674,7 @@
             {
                 "name": "QueryRejectVehicle",
                 "description": "Exclude vehicle from the next query",
-                "tags": ["Query", "Vehicle"],
+                "tags": ["Query", "Vehicle", "Handle"],
                 "inputs": [
                     {
                         "name": "vehicle",
@@ -1688,7 +1688,7 @@
             {
                 "name": "QueryRejectBody",
                 "description": "Exclude body from the next query",
-                "tags": ["Query", "Body"],
+                "tags": ["Query", "Body", "Handle"],
                 "inputs": [
                     {
                         "name": "body",
@@ -1702,7 +1702,7 @@
             {
                 "name": "QueryRejectShape",
                 "description": "Exclude shape from the next query",
-                "tags": ["Query", "Shape"],
+                "tags": ["Query", "Shape", "Handle"],
                 "inputs": [
                     {
                         "name": "shape",
