@@ -1,0 +1,4153 @@
+[    
+    {
+        "category": "Parameters",
+        "description": "Scripts can have parameters defined in the level XML file. These serve as input to a specific instance of the script and can be used to configure various options and parameters of the script. While these parameters can be read at any time in the script, it's recommended to copy them to a global variable in or outside the init function.",
+        "functions": [
+            {
+                "name": "GetIntParam",
+                "description": "",
+                "tags": ["Getter", "Number", "Parameter"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Parameter name"
+                    },
+                    {
+                        "name": "default",
+                        "type": "number",
+                        "description": "Default parameter value"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "number",
+                        "description": "Parameter value"
+                    }
+                ],
+                "example": "--Retrieve blinkcount parameter, or set to 5 if omitted\nparameterBlinkCount = GetIntParam(\"blinkcount\", 5)"
+            },
+            {
+                "name": "GetFloatParam",
+                "description": "",
+                "tags": ["Getter", "Number", "Parameter"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Parameter name"
+                    },
+                    {
+                        "name": "default",
+                        "type": "number",
+                        "description": "Default parameter value"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "number",
+                        "description": "Parameter value"
+                    }
+                ],
+                "example": "--Retrieve speed parameter, or set to 10.0 if omitted\nparameterSpeed = GetFloatParam(\"speed\", 10.0)"
+            },
+            {
+                "name": "GetBoolParam",
+                "description": "",
+                "tags": ["Getter", "Boolean", "Parameter"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Parameter name"
+                    },
+                    {
+                        "name": "default",
+                        "type": "boolean",
+                        "description": "Default parameter value"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "boolean",
+                        "description": "Parameter value"
+                    }
+                ],
+                "example": "--Retrieve playsound parameter, or false if omitted\nparameterPlaySound = GetBoolParam(\"playsound\", false)"
+            },
+            {
+                "name": "GetStringParam",
+                "description": "",
+                "tags": ["Getter", "String", "Parameter"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Parameter name"
+                    },
+                    {
+                        "name": "default",
+                        "type": "string",
+                        "description": "Default parameter value"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "description": "Parameter value"
+                    }
+                ],
+                "example": "--Retrieve mode parameter, or \"idle\" if omitted\nparameterMode = GetStringParam(\"mode\", \"idle\")"
+            },
+            {
+                "name": "GetColorParam",
+                "description": "",
+                "tags": ["Getter", "Color", "Parameter"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Parameter name"
+                    },
+                    {
+                        "name": "default_r",
+                        "type": "number",
+                        "description": "Default red parameter value"
+                    },
+                    {
+                        "name": "default_g",
+                        "type": "number",
+                        "description": "Default green parameter value"
+                    },
+                    {
+                        "name": "default_b",
+                        "type": "number",
+                        "description": "Default blue parameter value"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red parameter value"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green parameter value"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue parameter value"
+                    }
+                ],
+                "example": "function init()\n   --Retrieve color parameter, or set to 0.39, 0.39, 0.39 if omitted\n   local color_r, color_g, color_b = GetColorParam(\"color\", 0.39, 0.39, 0.39)\n   DebugPrint(color_r .. \" \" .. color_g .. \" \" .. color_b)\nend"
+            }
+        ]
+    },
+    {
+        "category": "Script control",
+        "description": "General functions that control the operation and flow of the script.",
+        "functions": [
+            {
+                "name": "GetVersion",
+                "description": "",
+                "tags": ["Getter", "String"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "version",
+                        "type": "string",
+                        "description": "Dot separated string of current version of the game"
+                    }
+                ],
+                "example": "local v = GetVersion()\n--v is \"1.5.1\""
+            },
+            {
+                "name": "HasVersion",
+                "description": "",
+                "tags": ["Boolean", "String"],
+                "inputs": [
+                    {
+                        "name": "version",
+                        "type": "string",
+                        "description": "Reference version"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "match",
+                        "type": "boolean",
+                        "description": "True if current version is at least provided one"
+                    }
+                ],
+                "example": "function init()\n    if HasVersion(\"1.5.0\") then\n        --conditional code that only works on 1.5.0 or above\n        DebugPrint(\"New version\")\n    else\n        --legacy code that works on earlier versions\n        DebugPrint(\"Earlier version\")\n    end\nend"
+            },
+            {
+                "name": "GetTime",
+                "description": "Returns running time of this script. If called from update, this returns the simulated time, otherwise it returns wall time.",
+                "tags": ["Getter", "Number", "Time"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "time",
+                        "type": "number",
+                        "description": "The time in seconds since level was started"
+                    }
+                ],
+                "example": "function update()\n    local t = GetTime()\n    DebugPrint(t)\nend"
+            },
+            {
+                "name": "GetTimeStep",
+                "description": "Returns timestep of the last frame. If called from update, this returns the simulation time step, which is always one 60th of a second (0.0166667). If called from tick or draw it returns the actual time since last frame.",
+                "tags": ["Getter", "Number", "Time"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "dt",
+                        "type": "number",
+                        "description": "The timestep in seconds"
+                    }
+                ],
+                "example": "function tick()\n    local dt = GetTimeStep()\n    DebugPrint(\"tick dt: \" .. dt)\nend\n\nfunction update()\n    local dt = GetTimeStep()\n    DebugPrint(\"update dt: \" .. dt)\nend"
+            },
+            {
+                "name": "InputLastPressedKey",
+                "description": "",
+                "tags": ["Getter", "String", "Input"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Name of last pressed key, empty if no key is pressed"
+                    }
+                ],
+                "example": "function tick()\n    local name = InputLastPressedKey()\n    if string.len(name) > 0 then\n        DebugPrint(name) \n    end\nend"
+            },
+            {
+                "name": "InputLastPressedGamepadButton",
+                "description": "",
+                "tags": ["Getter", "String", "Input"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Name of last pressed key, empty if no key is pressed"
+                    }
+                ],
+                "example": "function tick()\n    local name = InputLastPressedGamepadButton()\n    if string.len(name) > 0 then\n        DebugPrint(name) \n    end\nend"
+            },
+            {
+                "name": "InputPressed",
+                "description": "",
+                "tags": ["Input", "String", "Boolean"],
+                "inputs": [
+                    {
+                        "name": "input",
+                        "type": "string",
+                        "description": "The input identifier"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "pressed",
+                        "type": "boolean",
+                        "description": "True if input was pressed during last frame."
+                    }
+                ],
+                "example": "function tick()\n    if InputPressed(\"interact\") then\n        DebugPrint(\"interact\")\n    end\nend"
+            },
+            {
+                "name": "InputReleased",
+                "description": "",
+                "tags": ["Input", "String", "Boolean"],
+                "inputs": [
+                    {
+                        "name": "input",
+                        "type": "string",
+                        "description": "The input identifier"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "released",
+                        "type": "boolean",
+                        "description": "True if input was released during last frame."
+                    }
+                ],
+                "example": "function tick()\n    if InputReleased(\"interact\") then\n        DebugPrint(\"interact\")\n    end\nend"
+            },
+            {
+                "name": "InputDown",
+                "description": "",
+                "tags": ["Input", "String", "Boolean"],
+                "inputs": [
+                    {
+                        "name": "input",
+                        "type": "string",
+                        "description": "The input identifier"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "released",
+                        "type": "boolean",
+                        "description": "True if input was released during last frame."
+                    }
+                ],
+                "example": "function tick()\n    if InputDown(\"interact\") then\n        DebugPrint(\"interact\")\n    end\nend"
+            },
+            {
+                "name": "InputValue",
+                "description": "",
+                "tags": ["Input", "String", "Number"],
+                "inputs": [
+                    {
+                        "name": "input",
+                        "type": "string",
+                        "description": "The input identifier"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "number",
+                        "description": "Depends on input type"
+                    }
+                ],
+                "example": "local scrollPos = 0\nfunction tick()\n    scrollPos = scrollPos + InputValue(\"mousewheel\")\n    DebugPrint(scrollPos)\nend"
+            },
+            {
+                "name": "InputClear",
+                "description": "All player input is \"forgotten\" by the game after calling this function",
+                "tags": ["Input", "Setter"],
+                "inputs": [],
+                "outputs": [],
+                "example": "function update()\n    -- Prints '2' because InputClear() allows the game to \"forget\" the player's input\n    if InputDown(\"interact\") then\n        InputClear()\n        if InputDown(\"interact\") then\n            DebugPrint(1)\n        else\n            DebugPrint(2)\n        end\n    end\nend"
+            },
+            {
+                "name": "InputResetOnTransition",
+                "description": "This function will reset everything we need to reset during state transition",
+                "tags": ["Input", "Setter"],
+                "inputs": [],
+                "outputs": [],
+                "example": "function update()\n    if InputDown(\"interact\") then\n        -- In this form, you won't be able to notice the result of the function; you need a specific context\n        InputResetOnTransition()\n    end\nend"
+            },
+            {
+                "name": "LastInputDevice",
+                "description": "",
+                "tags": ["Input", "String"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "device?",
+                        "type": "string?",
+                        "description": "Input device"
+                    }
+                ],
+                "example": "#include \"ui/ui_helpers.lua\"\n\nfunction update()\n    if LastInputDevice() == UI_DEVICE_GAMEPAD then\n        DebugPrint(\"Last input was from gamepad\")\n    elseif LastInputDevice() == UI_DEVICE_MOUSE then\n        DebugPrint(\"Last input was mouse & keyboard\")\n    end\nend"
+            },
+            {
+                "name": "SetValue",
+                "description": "Set value of a number variable in the global context with an optional transition. If a transition is provided the value will animate from current value to the new value during the transition time. Transition can be one of the following:\n\nTODO: Table",
+                "tags": ["Setter", "Variable", "Number", "String", "Transition"],
+                "inputs": [
+                    {
+                        "name": "variable",
+                        "type": "string",
+                        "description": "Name of number variable in the global context"
+                    },
+                    {
+                        "name": "value",
+                        "type": "number",
+                        "description": "The new value"
+                    },
+                    {
+                        "name": "transition",
+                        "type": "string",
+                        "description": "Transition type. See description.",
+                        "optional": true
+                    },
+                    {
+                        "name": "time",
+                        "type": "number",
+                        "description": "Transition time (seconds)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "myValue = 0\nfunction tick()\n    --This will change the value of myValue from 0 to 1 in a linear fasion over 0.5 seconds\n    SetValue(\"myValue\", 1, \"linear\", 0.5)\n    DebugPrint(myValue)\nend"
+            },
+            {
+                "name": "SetValueInTable",
+                "description": "Chages the value of a table member in time according to specified args. Works similar to SetValue but for global variables of trivial types",
+                "tags": ["Setter", "Variable", "Number", "String", "Transition", "Table"],
+                "inputs": [
+                    {
+                        "name": "table",
+                        "type": "table",
+                        "description": "Id of the table"
+                    },
+                    {
+                        "name": "name",
+                        "type": "number",
+                        "description": "Name of the member"
+                    },
+                    {
+                        "name": "value",
+                        "type": "number",
+                        "description": "New value"
+                    },
+                    {
+                        "name": "transition",
+                        "type": "string",
+                        "description": "Transition type. See description."
+                    },
+                    {
+                        "name": "time",
+                        "type": "number",
+                        "description": "Transition time (seconds)"
+                    }
+                ],
+                "outputs": [],
+                "example": "local t = {}\nfunction init()\n    SetValueInTable(t, \"score\", 1, \"linear\", 1)\nend\n\nfunction update()\n    if InputPressed(\"interact\") then\n        SetValueInTable(t, \"score\", t.score + 1, \"linear\", 1)\n        DebugPrint(t.score)\n    end\nend"
+            },
+            {
+                "name": "PauseMenuButton",
+                "description": "Calling this function will add a button on the bottom bar or in the main pause menu (center of the screen) when the game is paused. Or in any custom location, identified by 'location' parameter. A primary button will be placed in the main pause menu if this function is called from a playable mod. There can be only one primary button. Use this as a way to bring up mod settings or other user interfaces while the game is running. Call this function every frame from the tick function for as long as the pause menu button should still be visible. Only one button per script is allowed. Consecutive calls replace button added in previous calls.",
+                "tags": ["Setter", "Variable", "Number", "String", "Transition"],
+                "inputs": [
+                    {
+                        "name": "title",
+                        "type": "table",
+                        "description": "Text on button"
+                    },
+                    {
+                        "name": "primary/location",
+                        "type": "boolean/string",
+                        "description": "Primary if true./Button location.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "function tick()\n\n    -- Primary button will be placed in the main pause menu\n    if PauseMenuButton(\"Back to Hub\", true) then\n        StartLevel(\"hub\", \"level/hub.xml\")\n    end\n    \n    -- Button will be placed in the bottom bar of the pause menu\n    if PauseMenuButton(\"MyMod Settings\") then\n        visible = true\n    end\nend\n\nfunction draw()\n    if visible then\n        UiMakeInteractive()\n    end\nend"
+            },
+            {
+                "name": "HasFile",
+                "description": "Checks that file exists on the specified path",
+                "tags": ["Checker", "String"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to file"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "exists",
+                        "type": "boolean",
+                        "description": "True if file exists"
+                    }
+                ],
+                "example": "local file = \"gfx/circle.png\"\n\nfunction draw()\n    if HasFile(image) then\n        DebugPrint(\"file \" .. file .. \" exists\")\n    end\nend",
+                "deprecateNotice": true
+            },
+            {
+                "name": "Command",
+                "description": "Executes the command. Commands examples:\ngame.quit, game.restart",
+                "tags": ["String"],
+                "inputs": [
+                    {
+                        "name": "command",
+                        "type": "string",
+                        "description": "Command to execute"
+                    }
+                ],
+                "outputs": [],
+                "example": "function update()\n    if InputPressed(\"interact\") then\n        Command(\"game.quit\")\n    end\nend",
+                "deprecateNotice": true
+            },
+            {
+                "name": "StartLevel",
+                "description": "Start a level",
+                "tags": ["String", "Sender", "Boolean"],
+                "inputs": [
+                    {
+                        "name": "mission",
+                        "type": "string",
+                        "description": "An identifier of your choice"
+                    },
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to level XML file"
+                    },
+                    {
+                        "name": "layers",
+                        "type": "string",
+                        "description": "Active layers. Default is no layers.",
+                        "optional": true
+                    },
+                    {
+                        "name": "passThrough",
+                        "type": "boolean",
+                        "description": "If set, loading screen will have no text and music will keep playing",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n    --Start level with no active layers\n    StartLevel(\"level1\", \"MOD/level1.xml\")\n\n    --Start level with two layers\n    StartLevel(\"level1\", \"MOD/level1.xml\", \"vehicles targets\")\nend"
+            },
+            {
+                "name": "Restart",
+                "description": "Restart level",
+                "tags": ["Sender"],
+                "inputs": [],
+                "outputs": [],
+                "example": "function tick()\n    if InputPressed(\"interact\") then\n        Restart()\n    end\nend"
+            },
+            {
+                "name": "Menu",
+                "description": "Go to main menu",
+                "tags": ["Sender"],
+                "inputs": [],
+                "outputs": [],
+                "example": "function tick()\n    if InputPressed(\"interact\") then\n        Menu()\n    end\nend"
+            }
+        ]
+    },
+    {
+        "category": "Registry",
+        "description": " The Teardown engine uses a global key/value-pair registry that scripts can read and write. The engine exposes a lot of internal information through the registry, but it can also be used as way for scripts to communicate with each other.\n\nThe registry is a hierarchical node structure and can store a value in each node (parent nodes can also have a value). The values can be of type floating point number, integer, boolean or string, but all types are automatically converted if another type is requested. Some registry nodes are reserved and used for special purposes.\n\nRegistry node names may only contain the characters a-z, numbers 0-9, dot, dash and underscore.\n\nTODO: Register table",
+        "functions": [
+            {
+                "name": "ClearKey",
+                "description": "Remove registry node, including all child nodes.",
+                "tags": ["Setter", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key to clear"
+                    }
+                ],
+                "outputs": [],
+                "example": "--If the registry looks like this:\n--score\n--    levels\n--        level1 = 5\n--        level2 = 4\n\nfunction init()\n    ClearKey(\"score.levels\")\nend\n\n--Afterwards, the registry will look like this:\n--score"
+            },
+            {
+                "name": "ListKeys",
+                "description": "List all child keys of a registry node.",
+                "tags": ["Table", "String", "Getter", "Registry"],
+                "inputs": [
+                    {
+                        "name": "parent",
+                        "type": "string",
+                        "description": "The parent registry key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "children",
+                        "type": "table",
+                        "description": "Indexed table of strings with child keys"
+                    }
+                ],
+                "example": "--If the registry looks like this:\n--game\n--    tool\n--        steroid\n--        rifle\n--        ...\n\nfunction init()\n    local list = ListKeys(\"game.tool\")\n    for i=1, #list do\n        DebugPrint(list[i])\n    end\nend\n\n--This will output:\n--steroid\n--rifle\n--..."
+            },
+            {
+                "name": "HasKey",
+                "description": "Returns true if the registry contains a certain key",
+                "tags": ["Checker", "String", "Boolean", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "exists",
+                        "type": "boolean",
+                        "description": "True if key exists"
+                    }
+                ],
+                "example": "function init()\n    DebugPrint(HasKey(\"score.levels\"))\n    DebugPrint(HasKey(\"game.tool.rifle\"))\nend"
+            },
+            {
+                "name": "SetInt",
+                "description": "",
+                "tags": ["Integer", "Setter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    },
+                    {
+                        "name": "value",
+                        "type": "integer",
+                        "description": "Desired value"
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n    SetInt(\"score.levels.level1\", 4)\n    DebugPrint(GetInt(\"score.levels.level1\"))\nend"
+            },
+            {
+                "name": "GetInt",
+                "description": "",
+                "tags": ["Integer", "Getter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "integer",
+                        "description": "Integer value of registry node or zero if not found"
+                    }
+                ],
+                "example": "function init()\n    SetInt(\"score.levels.level1\", 4)\n    DebugPrint(GetInt(\"score.levels.level1\"))\nend"
+            },
+            {
+                "name": "SetFloat",
+                "description": "",
+                "tags": ["Float", "Setter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    },
+                    {
+                        "name": "value",
+                        "type": "integer",
+                        "description": "Desired value"
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n    SetFloat(\"level.time\", 22.3)\n    DebugPrint(GetFloat(\"level.time\"))\nend"
+            },
+            {
+                "name": "GetFloat",
+                "description": "",
+                "tags": ["Float", "Getter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Float value of registry node or zero if not found"
+                    }
+                ],
+                "example": "function init()\n    SetFloat(\"level.time\", 22.3)\n    DebugPrint(GetFloat(\"level.time\"))\nend"
+            },
+            {
+                "name": "SetBool",
+                "description": "",
+                "tags": ["Boolean", "Setter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    },
+                    {
+                        "name": "value",
+                        "type": "integer",
+                        "description": "Desired value"
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n    SetBool(\"level.robots.enabled\", true)\n    DebugPrint(GetBool(\"level.robots.enabled\"))\nend"
+            },
+            {
+                "name": "GetBool",
+                "description": "",
+                "tags": ["Boolean", "Getter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Boolean value of registry node or false if not found"
+                    }
+                ],
+                "example": "function init()\n    SetBool(\"level.robots.enabled\", true)\n    DebugPrint(GetBool(\"level.robots.enabled\"))\nend"
+            },
+            {
+                "name": "SetString",
+                "description": "",
+                "tags": ["Setter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    },
+                    {
+                        "name": "value",
+                        "type": "integer",
+                        "description": "Desired value"
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n    SetString(\"level.name\", \"foo\")\n    DebugPrint(GetString(\"level.name\"))\nend"
+            },
+            {
+                "name": "GetString",
+                "description": "",
+                "tags": ["Getter", "String", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "String value of registry node or \"\" if not found"
+                    }
+                ],
+                "example": "function init()\n    SetString(\"level.name\", \"foo\")\n    DebugPrint(GetString(\"level.name\"))\nend"
+            },
+            {
+                "name": "SetColor",
+                "description": "Sets the color registry key value",
+                "tags": ["Setter", "String", "Color", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    },
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Desired red channel value"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Desired green channel value"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Desired blue channel value"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Desired alpha channel value",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n    SetColor(\"game.tool.wire.color\", 1.0, 0.5, 0.3)\nend"
+            },
+            {
+                "name": "GetColor",
+                "description": "",
+                "tags": ["Getter", "String", "Color", "Registry"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Registry key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "r/color?",
+                        "type": "number/table?",
+                        "description": "Red value of registry node or 1? if not found"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green value of registry node or 1? if not found"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue value of registry node or 1? if not found"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha value of registry node or 1? if not found"
+                    }
+                ],
+                "example": "function init()\n    SetColor(\"red\", 1.0, 0.1, 0.1)\n    color = GetColor(\"red\")\n    DebugPrint(\"RGBA: \" .. color[1] .. \" \" .. color[2] .. \" \" .. color[3] .. \" \" .. color[4])\nend"
+            },
+            {
+                "name": "GetTranslatedStringByKey",
+                "description": "Returns the translation for the specified key from the translation table. If the key is not found returns the default value",
+                "tags": ["String", "Localization", "Getter"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Translation key"
+                    },
+                    {
+                        "name": "default",
+                        "type": "string",
+                        "description": "Default value",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "description": "Translation"
+                    }
+                ],
+                "example": "function init()\n    DebugPrint(GetTranslatedStringByKey(\"TOOL_CAMERA\"))\nend"
+            },
+            {
+                "name": "HasTranslationByKey",
+                "description": "Checks that translation for specified key exists",
+                "tags": ["String", "Localization", "Checker"],
+                "inputs": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "description": "Translation key"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "boolean",
+                        "description": "True if translation exists"
+                    }
+                ],
+                "example": "function init()\n    DebugPrint(HasTranslationByKey(\"TOOL_CAMERA\"))\nend"
+            },
+            {
+                "name": "LoadLanguageTable",
+                "description": "Loads the language table for specified language id for further localization. Possible id values are:\n\n<TODO Language table>",
+                "tags": ["Localization"],
+                "inputs": [
+                    {
+                        "name": "id",
+                        "type": "string",
+                        "description": "Language id (enum)"
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n    -- loads the english localization table\n    LoadLanguageTable(0)\nend"
+            },
+            {
+                "name": "GetUserNickname",
+                "description": "Returns the user nickname with the specified id. If id is not specified, returns nickname for user with id '0'",
+                "tags": ["Multiplayer?", "String", "Number"],
+                "inputs": [
+                    {
+                        "name": "id",
+                        "type": "number",
+                        "description": "User id",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "description": "User nickname"
+                    }
+                ],
+                "example": "function init()\n    DebugPrint(GetUserNickname(0))\nend"
+            }
+        ]
+    },
+    {
+        "category": "Vector math",
+        "description": "Vector math is used in Teardown scripts to represent 3D positions, directions, rotations and transforms. The base types are vectors, quaternions and transforms. Vectors and quaternions are indexed tables with three and four components. Transforms are tables consisting of one vector (pos) and one quaternion (rot)",
+        "functions": [
+            {
+                "name": "Vec",
+                "description": "Create new vector and optionally initializes it to the provided values. A Vec is equivalent to a regular lua table with three numbers.",
+                "tags": ["Vector"],
+                "inputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "X value",
+                        "optional": true
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Y value",
+                        "optional": true
+                    },
+                    {
+                        "name": "z",
+                        "type": "number",
+                        "description": "Z value",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "vec",
+                        "type": "table",
+                        "description": "New vector"
+                    }
+                ],
+                "example": "function init()\n    --These are equivalent\n    local a1 = Vec()\n    local a2 = {0, 0, 0}\n    DebugPrint(\"a1 == a2: \" .. tostring(VecStr(a1) == VecStr(a2)))\n\n    --These are equivalent\n    local b1 = Vec(0, 1, 0)\n    local b2 = {0, 1, 0}\n    DebugPrint(\"b1 == b2: \" .. tostring(VecStr(b1) == VecStr(b2)))\nend"
+            },
+            {
+                "name": "VecCopy",
+                "description": "Vectors should never be assigned like regular numbers. Since they are implemented with lua tables assignment means two references pointing to the same data. Use this function instead.",
+                "tags": ["Vector"],
+                "inputs": [
+                    {
+                        "name": "org",
+                        "type": "table",
+                        "description": "A vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "new",
+                        "type": "table",
+                        "description": "Copy of org vector"
+                    }
+                ],
+                "example": "function init()\n    --Do this to assign a vector\n    local right1 = Vec(1, 2, 3)\n    local right2 = VecCopy(right1)\n\n    --Never do this unless you REALLY know what you're doing\n    local wrong1 = Vec(1, 2, 3)\n    local wrong2 = wrong1\nend"
+            },
+            {
+                "name": "VecStr",
+                "description": "Returns the string representation of vector",
+                "tags": ["Vector", "String"],
+                "inputs": [
+                    {
+                        "name": "vec",
+                        "type": "table",
+                        "description": "Vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "str",
+                        "type": "string",
+                        "description": "String representation"
+                    }
+                ],
+                "example": "function init()\n    local v = Vec(0, 10, 0)\n    DebugPrint(VecStr(v))\nend"
+            },
+            {
+                "name": "VecLength",
+                "description": "",
+                "tags": ["Vector", "Number"],
+                "inputs": [
+                    {
+                        "name": "vec",
+                        "type": "table",
+                        "description": "A vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "length",
+                        "type": "number",
+                        "description": "Length (magnitude) of the vector"
+                    }
+                ],
+                "example": "function init()\n    local v = Vec(1,1,0)\n    local l = VecLength(v)\n    --l now equals 1.4142\n    DebugPrint(l)\nend"
+            },
+            {
+                "name": "VecNormalize",
+                "description": "If the input vector is of zero length, the function returns {0,0,1}",
+                "tags": ["Vector"],
+                "inputs": [
+                    {
+                        "name": "vec",
+                        "type": "table",
+                        "description": "A vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "norm",
+                        "type": "table",
+                        "description": "A vector of length 1.0"
+                    }
+                ],
+                "example": "function init()\n    local v = Vec(0,3,0)\n    local n = VecNormalize(v)\n    --n now equals {0,1,0}\n    DebugPrint(VecStr(n))\nend"
+            },
+            {
+                "name": "VecScale",
+                "description": "",
+                "tags": ["Vector", "Number"],
+                "inputs": [
+                    {
+                        "name": "vec",
+                        "type": "table",
+                        "description": "A vector"
+                    },
+                    {
+                        "name": "scale",
+                        "type": "number",
+                        "description": "A scale factor"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "scaled",
+                        "type": "table",
+                        "description": "A scaled version of input vector"
+                    }
+                ],
+                "example": "function init()\n    local v = Vec(1,2,3)\n    local s = VecScale(v, 2)\n    --s now equals {2,4,6}\n    DebugPrint(VecStr(s))\nend"
+            },
+            {
+                "name": "VecAdd",
+                "description": "",
+                "tags": ["Vector"],
+                "inputs": [
+                    {
+                        "name": "a",
+                        "type": "table",
+                        "description": "Vector"
+                    },
+                    {
+                        "name": "b",
+                        "type": "table",
+                        "description": "Vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "c",
+                        "type": "table",
+                        "description": "New vector with sum of a and b"
+                    }
+                ],
+                "example": "function init()\n    local a = Vec(1,2,3)\n    local b = Vec(3,0,0)\n    local c = VecAdd(a, b)\n    --c now equals {4,2,3}\n    DebugPrint(VecStr(c))\nend"
+            },
+            {
+                "name": "VecSub",
+                "description": "",
+                "tags": ["Vector"],
+                "inputs": [
+                    {
+                        "name": "a",
+                        "type": "table",
+                        "description": "Vector"
+                    },
+                    {
+                        "name": "b",
+                        "type": "table",
+                        "description": "Vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "c",
+                        "type": "table",
+                        "description": "New vector representing a-b"
+                    }
+                ],
+                "example": "function init()\n    local a = Vec(1,2,3)\n    local b = Vec(3,0,0)\n    local c = VecSub(a, b)\n    --c now equals {-2,2,3}\n    DebugPrint(VecStr(c))\nend"
+            },
+            {
+                "name": "VecDot",
+                "description": "",
+                "tags": ["Vector", "Number"],
+                "inputs": [
+                    {
+                        "name": "a",
+                        "type": "table",
+                        "description": "Vector"
+                    },
+                    {
+                        "name": "b",
+                        "type": "table",
+                        "description": "Vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "c",
+                        "type": "number",
+                        "description": "Dot product of a and b"
+                    }
+                ],
+                "example": "function init()\n    local a = Vec(1,2,3)\n    local b = Vec(3,1,0)\n    local c = VecDot(a, b)\n    --c now equals 5\n    DebugPrint(c)\nend"
+            },
+            {
+                "name": "VecCross",
+                "description": "",
+                "tags": ["Vector"],
+                "inputs": [
+                    {
+                        "name": "a",
+                        "type": "table",
+                        "description": "Vector"
+                    },
+                    {
+                        "name": "b",
+                        "type": "table",
+                        "description": "Vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "c",
+                        "type": "table",
+                        "description": "Cross product of a and b (also called vector product)"
+                    }
+                ],
+                "example": "function init()\n    local a = Vec(1,0,0)\n    local b = Vec(0,1,0)\n    local c = VecCross(a, b)\n    --c now equals {0,0,1}\n    DebugPrint(VecStr(c))\nend"
+            },
+            {
+                "name": "VecLerp",
+                "description": "",
+                "tags": ["Vector", "Number"],
+                "inputs": [
+                    {
+                        "name": "a",
+                        "type": "table",
+                        "description": "Vector"
+                    },
+                    {
+                        "name": "b",
+                        "type": "table",
+                        "description": "Vector"
+                    },
+                    {
+                        "name": "t",
+                        "type": "number",
+                        "description": "fraction (usually between 0.0 and 1.0)"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "c",
+                        "type": "table",
+                        "description": "Linearly interpolated vector between a and b, using t"
+                    }
+                ],
+                "example": "function init()\n    local a = Vec(2,0,0)\n    local b = Vec(0,4,2)\n    local t = 0.5\n    \n    --These two are equivalent\n    local c1 = VecLerp(a, b, t)\n    local c2 = VecAdd(VecScale(a, 1-t), VecScale(b, t))\n    \n    --c1 and c2 now equals {1, 2, 1}\n    DebugPrint(\"c1\" .. VecStr(c1) .. \" == c2\" .. VecStr(c2))\nend"
+            },
+            {
+                "name": "Quat",
+                "description": "Create new quaternion and optionally initializes it to the provided values. Do not attempt to initialize a quaternion with raw values unless you know what you are doing. Use QuatEuler or QuatAxisAngle instead. If no arguments are given, a unit quaternion will be created: {0, 0, 0, 1}. A quaternion is equivalent to a regular lua table with four numbers.",
+                "tags": ["Quat"],
+                "inputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "X value",
+                        "optional": true
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Y value",
+                        "optional": true
+                    },
+                    {
+                        "name": "z",
+                        "type": "number",
+                        "description": "Z value",
+                        "optional": true
+                    },
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "W value",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "quat",
+                        "type": "table",
+                        "description": "New quaternion"
+                    }
+                ],
+                "example": "function init()\n    --These are equivalent\n    local a1 = Quat()\n    local a2 = {0, 0, 0, 1}\n\n    DebugPrint(QuatStr(a1) == QuatStr(a2))\nend"
+            },
+            {
+                "name": "QuatCopy",
+                "description": "Quaternions should never be assigned like regular numbers. Since they are implemented with lua tables assignment means two references pointing to the same data. Use this function instead.",
+                "tags": ["Quat"],
+                "inputs": [
+                    {
+                        "name": "org",
+                        "type": "table",
+                        "description": "Quaternion"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "new",
+                        "type": "table",
+                        "description": "Copy of org quaternion"
+                    }
+                ],
+                "example": "function init()\n    --Do this to assign a quaternion\n    local right1 = QuatEuler(0, 90, 0)\n    local right2 = QuatCopy(right1)\n\n    --Never do this unless you REALLY know what you're doing\n    local wrong1 = QuatEuler(0, 90, 0)\n    local wrong2 = wrong1\nend"
+            },
+            {
+                "name": "QuatAxisAngle",
+                "description": "Create a quaternion representing a rotation around a specific axis",
+                "tags": ["Quat", "Number", "Vector"],
+                "inputs": [
+                    {
+                        "name": "axis",
+                        "type": "table",
+                        "description": "Rotation axis, unit vector"
+                    },
+                    {
+                        "name": "angle",
+                        "type": "number",
+                        "description": "Rotation angle in degrees"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "quat",
+                        "type": "table",
+                        "description": "New quaternion"
+                    }
+                ],
+                "example": "function init()\n    --Create quaternion representing rotation 30 degrees around Y axis\n    local q = QuatAxisAngle(Vec(0,1,0), 30)\n    DebugPrint(QuatStr(q))\nend"
+            },
+            {
+                "name": "QuatEuler",
+                "description": "Create quaternion using euler angle notation. The order of applied rotations uses the \"NASA standard aeroplane\" model:\n\n<ol><li>Rotation around Y axis (yaw or heading)</li><li>Rotation around Z axis (pitch or attitude)</li><li>Rotation around X axis (roll or bank)</li></ol>",
+                "tags": ["Quat", "Number", "Vector"],
+                "inputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "Angle around X axis in degrees, sometimes also called roll or bank"
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Angle around Y axis in degrees, sometimes also called yaw or heading"
+                    },
+                    {
+                        "name": "z",
+                        "type": "number",
+                        "description": "Angle around Z axis in degrees, sometimes also called pitch or attitude"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "quat",
+                        "type": "table",
+                        "description": "New quaternion"
+                    }
+                ],
+                "example": "function init()\n    --Create quaternion representing rotation 30 degrees around Y axis and 25 degrees around Z axis\n    local q = QuatEuler(0, 30, 25)\nend"
+            }
+        ]
+    },
+    {
+        "category": "Entity",
+        "description": "An Entity is the basis of most objects in the Teardown engine (bodies, shapes, lights, locations, etc). All entities can have tags, which is a way to store custom properties on entities for scripting purposes. Some tags are also reserved for engine use. See documentation for details.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Body",
+        "description": "A body represents a rigid body in the scene. It can be either static or dynamic. Only dynamic bodies are affected by physics.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Shape",
+        "description": "A shape is a voxel object and always owned by a body. A single body may contain multiple shapes. The transform of shape is expressed in the parent body coordinate system.",
+        "functions": [
+            {
+                "name": "GetShapeMaterialAtPosition",
+                "description": "Return material properties for a particular voxel.",
+                "tags": ["Getter", "Shape", "Material", "Color", "Vec"],
+                "inputs": [
+                    {
+                        "name": "handle",
+                        "type": "number",
+                        "description": "Shape handle"
+                    },
+                    {
+                        "name": "pos",
+                        "type": "table",
+                        "description": "Position in world space"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "description": "Material type"
+                    },
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha"
+                    },
+                    {
+                        "name": "entry",
+                        "type": "number",
+                        "description": "Palette entry for voxel (zero if empty)"
+                    }
+                ],
+                "example": "local hit, dist, normal, shape = QueryRaycast(pos, dir, 10)\nif hit then\n   local hitPoint = VecAdd(pos, VecScale(dir, dist))\n   local mat = GetShapeMaterialAtPosition(shape, hitPoint)\n   DebugPrint(\"Raycast hit voxel made out of \" .. mat)\nend"
+            }
+        ]
+    },
+    {
+        "category": "Location",
+        "description": "Locations are transforms placed in the editor as markers. Location transforms are always expressed in world space coordinates.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Joint",
+        "description": "Joints are used to physically connect two shapes. There are several types of joints and they are typically placed in the editor. When destruction occurs, joints may be transferred to new shapes, detached or completely disabled.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Light",
+        "description": "Light sources can be of several differnt types and configured in the editor. If a light source is owned by a shape, the intensity of the light source is scaled by the emissive scale of that shape. If the parent shape breaks, the emissive scale is set to zero and the light source is disabled. A light source without a parent shape will always emit light, unless exlicitly disabled by a script.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Trigger",
+        "description": "Triggers can be placed in the scene and queried by scripts to see if something is within a certain part of the scene.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Screen",
+        "description": "Screens display the content of UI scripts and can be made interactive.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Vehicle",
+        "description": "Vehicles are set up in the editor and consists of multiple parts owned by a vehicle entity.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Player",
+        "description": "The player functions expose certain information about the player.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Sound",
+        "description": "Sound functions are used for playing sounds or loops in the world. There sound functions are alwyas positioned and will be affected by acoustics simulation. If you want to play dry sounds without acoustics you should use UiSound and UiSoundLoop in the User Interface section.",
+        "functions": [
+            {
+                "name": "LoadSound",
+                "description": "",
+                "tags": ["Sound", "String", "Number"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to ogg sound file"
+                    },
+                    {
+                        "name": "nominalDistance",
+                        "type": "number",
+                        "description": "The distance in meters this sound is recorded at. Affects attenuation, default is 10.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "handle",
+                        "type": "number",
+                        "description": "Sound handle"
+                    }
+                ],
+                "example": "function init()\n    snd = LoadSound(\"beep.ogg\")\nend\n\nIf you have a list of sound files and you add a sequence number, starting from zero, at the end of each filename like below, then each time you call PlaySound it will pick a random sound from that list and play that sound.\n\n\"example-sound0.ogg\"\n\"example-sound1.ogg\"\n\"example-sound2.ogg\"\n\"example-sound3.ogg\"\n...\n\nfunction init()\n    --Load the first file in the sequence\n    snd = LoadSound(\"example-sound0.ogg\")\nend"
+            },
+            {
+                "name": "PlaySound",
+                "description": "",
+                "tags": ["Sound", "Vec", "Number"],
+                "inputs": [
+                    {
+                        "name": "handle",
+                        "type": "number",
+                        "description": "Sound handle"
+                    },
+                    {
+                        "name": "pos",
+                        "type": "table",
+                        "description": "World position as vector. Default is player position.",
+                        "optional": true
+                    },
+                    {
+                        "name": "volume",
+                        "type": "number",
+                        "description": "Playback volume. Default is 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "function init()\n   snd = LoadSound(\"beep.ogg\")\nend\n\nfunction tick()\n    if trigSound then\n        local pos = Vec(100, 0, 0)\n        PlaySound(snd, pos, 0.5)\n    end\nend"
+            }
+        ]
+    },
+    {
+        "category": "Sprite",
+        "description": "Sprites are 2D images in PNG or JPG format that can be drawn into the world. Sprites can be drawn with ot without depth test (occluded by geometry). Sprites will not be affected by lighting but they will go through post processing. If you want to display positioned information to the player as an overlay, you probably want to use the Ui functions in combination with UiWorldToPixel instead.",
+        "functions": [
+            {
+                "name": "SpawnParticle",
+                "description": "",
+                "inputs": [
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Ok"
+            }
+        ]
+    },
+    {
+        "category": "Scene queries",
+        "description": "Query the level in various ways.",
+        "functions": [
+            {
+                "name": "QueryRequire",
+                "description": "Set required layers for next query. Available layers are:\nTODO: Table",
+                "tags": ["Query", "String"],
+                "inputs": [
+                    {
+                        "name": "layers",
+                        "type": "string",
+                        "description": "Space separate list of layers"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Raycast dynamic, physical objects above debris threshold, but not specific vehicle\nQueryRequire(\"physical dynamic large\")\nQueryRejectVehicle(vehicle)\nQueryRaycast(...)"
+            },
+            {
+                "name": "QueryRejectVehicle",
+                "description": "Exclude vehicle from the next query",
+                "tags": ["Query", "Vehicle"],
+                "inputs": [
+                    {
+                        "name": "vehicle",
+                        "type": "number",
+                        "description": "Vehicle handle"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Do not include vehicle in next raycast\nQueryRejectVehicle(vehicle)\nQueryRaycast(...)"
+            },
+            {
+                "name": "QueryRejectBody",
+                "description": "Exclude body from the next query",
+                "tags": ["Query", "Body"],
+                "inputs": [
+                    {
+                        "name": "body",
+                        "type": "number",
+                        "description": "Body handle"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Do not include body in next raycast\nQueryRejectBody(body)\nQueryRaycast(...)"
+            },
+            {
+                "name": "QueryRejectShape",
+                "description": "Exclude shape from the next query",
+                "tags": ["Query", "Shape"],
+                "inputs": [
+                    {
+                        "name": "shape",
+                        "type": "number",
+                        "description": "Shape handle"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Do not include shape in next raycast\nQueryRejectShape(shape)\nQueryRaycast(...)"
+            },
+            {
+                "name": "QueryRaycast",
+                "description": "This will perform a raycast or spherecast (if radius is more than zero) query. If you want to set up a filter for the query you need to do so before every call to this function.",
+                "tags": ["Query", "Boolean", "Handle", "Dir", "Number", "Shape"],
+                "inputs": [
+                    {
+                        "name": "origin",
+                        "type": "table",
+                        "description": "World space point"
+                    },
+                    {
+                        "name": "direction",
+                        "type": "table",
+                        "description": "Unit length raycast direction as world space vector"
+                    },
+                    {
+                        "name": "maxDist",
+                        "type": "number",
+                        "description": "Raycast maximum distance. Keep this as low as possible for good performance."
+                    },
+                    {
+                        "name": "radius",
+                        "type": "number",
+                        "description": "Raycast thickness. Default zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "rejectTransparent",
+                        "type": "boolean",
+                        "description": "Raycast through transparent materials. Default false.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "hit",
+                        "type": "boolean",
+                        "description": "True if raycast hit something"
+                    },
+                    {
+                        "name": "dist",
+                        "type": "number",
+                        "description": "Hit distance from origin"
+                    },
+                    {
+                        "name": "normal",
+                        "type": "table",
+                        "description": "World space normal at hit point"
+                    },
+                    {
+                        "name": "shape",
+                        "type": "number",
+                        "description": "Handle to hit shape"
+                    }
+                ],
+                "example": "--Raycast from a high point straight downwards, excluding a specific vehicle\nQueryRejectVehicle(vehicle)\nlocal hit, d = QueryRaycast(Vec(0, 100, 0), Vec(0, -1, 0), 100)\nif hit then\n    ...hit something at distance d\nend"
+            },
+            {
+                "name": "QueryClosestPoint",
+                "description": "This will query the closest point to all shapes in the world. If you want to set up a filter for the query you need to do so before every call to this function.",
+                "tags": ["Query", "Vec", "Boolean", "Handle", "Dir", "Number", "Shape"],
+                "inputs": [
+                    {
+                        "name": "origin",
+                        "type": "table",
+                        "description": "World space point"
+                    },
+                    {
+                        "name": "maxDist",
+                        "type": "number",
+                        "description": "Maximum distance. Keep this as low as possible for good performance."
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "hit",
+                        "type": "boolean",
+                        "description": "True if a point was found"
+                    },
+                    {
+                        "name": "point",
+                        "type": "table",
+                        "description": "World space closest point"
+                    },
+                    {
+                        "name": "normal",
+                        "type": "table",
+                        "description": "World space normal at closest point"
+                    },
+                    {
+                        "name": "shape",
+                        "type": "number",
+                        "description": "Handle to closest shape"
+                    }
+                ],
+                "example": "--Find closest point within 10 meters of {0, 5, 0}, excluding any point on myVehicle\nQueryRejectVehicle(myVehicle)\nlocal hit, p, n, s = QueryClosestPoint(Vec(0, 5, 0), 10)\nif hit then\n    --Point p of shape s is closest\nend"
+            }
+        ]
+    },
+    {
+        "category": "Particles",
+        "description": "Functions to configure and emit particles, used for fire, smoke and other visual effects. There are two types of particles in Teardown - plain particles and smoke particles. Plain particles are simple billboard particles simulated with gravity and velocity that can be used for fire, debris, rain, snow and such. Smoke particles are only intended for smoke and they are simulated with fluid dynamics internally and rendered with some special tricks to get a more smoke-like appearance.\n\nAll functions in the particle API, except for SpawnParticle modify properties in the particle state, which is then used when emitting particles, so the idea is to set up a state, and then emit one or several particles using that state.\n\nMost properties in the particle state can be either constant or animated over time. Supply a single argument for constant, two argument for linear interpolation, and optionally a third argument for other types of interpolation. There are also fade in and fade out parameters that fade from and to zero.",
+        "functions": [
+            {
+                "name": "ParticleReset",
+                "description": "Reset to default particle state, which is a plain, white particle of radius 0.5. Collision is enabled and it alpha animates from 1 to 0.",
+                "tags": ["Particle", "Setter"],
+                "inputs": [],
+                "outputs": [],
+                "example": "ParticleReset()"
+            },
+            {
+                "name": "ParticleType",
+                "description": "Set type of particle",
+                "tags": ["Particle", "String"],
+                "inputs": [
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "description": "Type of particle. Can be \"smoke\" or \"plain\"."
+                    }
+                ],
+                "outputs": [],
+                "example": "ParticleType(\"smoke\")"
+            },
+            {
+                "name": "ParticleTile",
+                "description": "",
+                "tags": ["Particle", "Number"],
+                "inputs": [
+                    {
+                        "name": "type",
+                        "type": "int",
+                        "description": "Tile in the particle texture atlas (0-15)"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Smoke particle\nParticleTile(0)\n\n--Fire particle\nParticleTile(5)"
+            },
+            {
+                "name": "ParticleColor",
+                "description": "Set particle color to either constant (three arguments) or linear interpolation (six arguments)",
+                "tags": ["Particle", "Color"],
+                "inputs": [
+                    {
+                        "name": "r0",
+                        "type": "number",
+                        "description": "Red value"
+                    },
+                    {
+                        "name": "g0",
+                        "type": "number",
+                        "description": "Green value"
+                    },
+                    {
+                        "name": "b0",
+                        "type": "number",
+                        "description": "Blue value"
+                    },
+                    {
+                        "name": "r1",
+                        "type": "number",
+                        "description": "Red value at end",
+                        "optional": true
+                    },
+                    {
+                        "name": "g1",
+                        "type": "number",
+                        "description": "Green value at end",
+                        "optional": true
+                    },
+                    {
+                        "name": "b1",
+                        "type": "number",
+                        "description": "Blue value at end",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Constant red\nParticleColor(1,0,0)\n\n--Animating from yellow to red\nParticleColor(1,1,0, 1,0,0)"
+            },
+            {
+                "name": "ParticleRadius",
+                "description": "Set the particle radius. Max radius for smoke particles is 1.0.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "r0",
+                        "type": "number",
+                        "description": "Radius"
+                    },
+                    {
+                        "name": "r1",
+                        "type": "number",
+                        "description": "End radius",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Constant radius 0.4 meters\nParticleRadius(0.4)\n\n--Interpolate from small to large\nParticleRadius(0.1, 0.7)"
+            },
+            {
+                "name": "ParticleAlpha",
+                "description": "Set the particle alpha (opacity).",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "a0",
+                        "type": "number",
+                        "description": "Alpha (0.0 - 1.0)"
+                    },
+                    {
+                        "name": "a1",
+                        "type": "number",
+                        "description": "End alpha (0.0 - 1.0)",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Interpolate from opaque to transparent\nParticleAlpha(1.0, 0.0)"
+            },
+            {
+                "name": "ParticleGravity",
+                "description": "Set particle gravity. It will be applied along the world Y axis. A negative value will move the particle downwards.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "g0",
+                        "type": "number",
+                        "description": "Gravity"
+                    },
+                    {
+                        "name": "g1",
+                        "type": "number",
+                        "description": "End gravity",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Move particles slowly upwards\nParticleGravity(2)"
+            },
+            {
+                "name": "ParticleDrag",
+                "description": "Particle drag will slow down fast moving particles. It's implemented slightly different for smoke and plain particles. Drag must be positive, and usually look good between zero and one.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "d0",
+                        "type": "number",
+                        "description": "Drag"
+                    },
+                    {
+                        "name": "d1",
+                        "type": "number",
+                        "description": "End drag",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Slow down fast moving particles\nParticleDrag(0.5)"
+            },
+            {
+                "name": "ParticleEmissive",
+                "description": "Draw particle as emissive (glow in the dark). This is useful for fire and embers.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "e0",
+                        "type": "number",
+                        "description": "Emissive"
+                    },
+                    {
+                        "name": "e1",
+                        "type": "number",
+                        "description": "End emissive",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Highly emissive at start, not emissive at end\nParticleEmissive(5, 0)"
+            },
+            {
+                "name": "ParticleRotation",
+                "description": "Makes the particle rotate. Positive values is counter-clockwise rotation.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "r0",
+                        "type": "number",
+                        "description": "Rotation speed in radians per second."
+                    },
+                    {
+                        "name": "r1",
+                        "type": "number",
+                        "description": "End rotation speed in radians per second.",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Rotate fast at start and slow at end\nParticleRotation(10, 1)"
+            },
+            {
+                "name": "ParticleStretch",
+                "description": "Stretch particle along with velocity. 0.0 means no stretching. 1.0 stretches with the particle motion over one frame. Larger values stretches the particle even more.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "s0",
+                        "type": "number",
+                        "description": "Stretch"
+                    },
+                    {
+                        "name": "s1",
+                        "type": "number",
+                        "description": "End stretch",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Stretch particle along direction of motion\nParticleStretch(1.0)"
+            },
+            {
+                "name": "ParticleSticky",
+                "description": "Make particle stick when in contact with objects. This can be used for friction.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "s0",
+                        "type": "float",
+                        "description": "Sticky (0.0 - 1.0)"
+                    },
+                    {
+                        "name": "s1",
+                        "type": "float",
+                        "description": "End sticky (0.0 - 1.0)",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Make particles stick to objects\nParticleSticky(0.5)"
+            },
+            {
+                "name": "ParticleCollide",
+                "description": "Control particle collisions. A value of zero means that collisions are ignored. One means full collision. It is sometimes useful to animate this value from zero to one in order to not collide with objects around the emitter.",
+                "tags": ["Particle", "Number", "String"],
+                "inputs": [
+                    {
+                        "name": "c0",
+                        "type": "float",
+                        "description": "Collide (0.0 - 1.0)"
+                    },
+                    {
+                        "name": "c1",
+                        "type": "float",
+                        "description": "End collide (0.0 - 1.0)",
+                        "optional": true
+                    },
+                    {
+                        "name": "interpolation",
+                        "type": "string",
+                        "description": "Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadein",
+                        "type": "float",
+                        "description": "Fade in between t=0 and t=fadein. Default is zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "fadeout",
+                        "type": "float",
+                        "description": "Fade out between t=fadeout and t=1. Default is one.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Disable collisions\nParticleCollide(0)\n\n--Enable collisions over time\nParticleCollide(0, 1)\n\n--Ramp up collisions very quickly, only skipping the first 5% of lifetime\nParticleCollide(1, 1, \"constant\", 0.05)"
+            },
+            {
+                "name": "ParticleFlags",
+                "description": "Set particle bitmask. The value 256 means fire extinguishing particles and is currently the only flag in use. There might be support for custom flags and queries in the future.",
+                "tags": ["Particle", "Number"],
+                "inputs": [
+                    {
+                        "name": "bitmask",
+                        "type": "int",
+                        "description": "Particle flags (bitmask 0-65535)"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Fire extinguishing particle\nParticleFlags(256)\nSpawnParticle(...)"
+            },
+            {
+                "name": "SpawnParticle",
+                "description": "Spawn particle using the previously set up particle state. You can call this multiple times using the same particle state, but with different position, velocity and lifetime. You can also modify individual properties in the particle state in between calls to to this function.",
+                "tags": ["Spawn", "Particle", "Vec", "Number"],
+                "inputs": [
+                    {
+                        "name": "pos",
+                        "type": "table",
+                        "description": "World space point as vector"
+                    },
+                    {
+                        "name": "velocity",
+                        "type": "table",
+                        "description": "World space velocity as vector"
+                    },
+                    {
+                        "name": "lifetime",
+                        "type": "number",
+                        "description": "Particle lifetime in seconds"
+                    }
+                ],
+                "outputs": [],
+                "example": "ParticleReset()\nParticleType(\"smoke\")\nParticleColor(0.7, 0.6, 0.5)\n--Spawn particle at world origo with upwards velocity and a lifetime of ten seconds\nSpawnParticle(Vec(0, 0, 0), Vec(0, 1, 0), 10.0)\n"
+            }
+        ]
+    },
+    {
+        "category": "Spawning",
+        "description": "The spawn API can be used to add entities into the existing scenes. You can spawn existing prefab XML files or generate XML and pass it in as a lua string.",
+        "functions": [
+            {
+                "name": "Spawn",
+                "description": "The first argument can be either a prefab XML file in your mod folder or a string with XML content. It is also possible to spawn prefabs from other mods, by using the mod id followed by colon, followed by the prefab path. Spawning prefabs from other mods should be used with causion since the referenced mod might not be installed. ",
+                "tags": ["Spawn", "Table", "XML", "Transform", "Path", "Handle"],
+                "inputs": [
+                    {
+                        "name": "xml",
+                        "type": "string",
+                        "description": "File name or xml string"
+                    },
+                    {
+                        "name": "transform",
+                        "type": "table",
+                        "description": "Spawn transform"
+                    },
+                    {
+                        "name": "allowStatic",
+                        "type": "boolean",
+                        "description": "Allow spawning static shapes and bodies (default false)",
+                        "optional": true
+                    },
+                    {
+                        "name": "jointExisting",
+                        "type": "boolean",
+                        "description": "Allow joints to connect to existing scene (default false)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "entities",
+                        "type": "table",
+                        "description": "Indexed table with handles to all spawned entities"
+                    }
+                ],
+                "example": "Spawn(\"MOD/prefab/mycar.xml\", Transform(Vec(0, 5, 0)))\nSpawn(\"<voxbox size='10 10 10' prop='true' material='wood'/>\", Transform(Vec(0, 10, 0)))"
+            }
+        ]
+    },   
+    {
+        "category": "Miscellaneous",
+        "description": "Functions of peripheral nature that doesn't fit in anywhere else",
+        "functions": [
+            {
+                "name": "Shoot",
+                "description": "Fire projectile. Type can be one of \"bullet\", \"rocket\", \"gun\" or \"shotgun\". For backwards compatilbility, type also accept a number, where 1 is same as \"rocket\" and anything else \"bullet\" Note that this function will only spawn the projectile, not make any sound Also note that \"bullet\" and \"rocket\" are the only projectiles that can hurt the player.",
+                "tags": ["Vec", "String", "Number", "Dir"],
+                "inputs": [
+                    {
+                        "name": "origin",
+                        "type": "table",
+                        "description": "Origin in world space as vector"
+                    },
+                    {
+                        "name": "direction",
+                        "type": "table",
+                        "description": "Unit length direction as world space vector"
+                    },
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "description": "Shot type, see description, default is \"bullet\"",
+                        "optional": true
+                    },
+                    {
+                        "name": "strength",
+                        "type": "number",
+                        "description": "Strength scaling, default is 1.0",
+                        "optional": true
+                    },
+                    {
+                        "name": "maxDist",
+                        "type": "number",
+                        "description": "Maximum distance, default is 100.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "Shoot(Vec(0, 10, 0), Vec(0, 0, 1), \"shotgun\")"
+            },
+            {
+                "name": "Paint",
+                "description": "Tint the color of objects within radius to either black or yellow.",
+                "tags": ["Vec", "String", "Number"],
+                "inputs": [
+                    {
+                        "name": "origin",
+                        "type": "table",
+                        "description": "Origin in world space as vector"
+                    },
+                    {
+                        "name": "radius",
+                        "type": "number",
+                        "description": "Affected radius, in range 0.0 to 5.0"
+                    },
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "description": "Paint type. Can be \"explosion\" or \"spraycan\". Default is spraycan.",
+                        "optional": true
+                    },
+                    {
+                        "name": "probability",
+                        "type": "number",
+                        "description": "Dithering probability between zero and one, default is 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "Paint(Vec(0, 10, 0), 0.5, \"spraycan\")"
+            },
+            {
+                "name": "PaintRGBA",
+                "description": "Tint the color of objects within radius.",
+                "tags": ["Vec", "String", "Number", "Color"],
+                "inputs": [
+                    {
+                        "name": "origin",
+                        "type": "table",
+                        "description": "Origin in world space as vector"
+                    },
+                    {
+                        "name": "radius",
+                        "type": "number",
+                        "description": "Affected radius, in range 0.0 to 5.0"
+                    },
+                    {
+                        "name": "r?",
+                        "type": "number",
+                        "description": "Red multiply",
+                        "optional": true
+                    },
+                    {
+                        "name": "g?",
+                        "type": "number",
+                        "description": "Green multiply",
+                        "optional": true
+                    },
+                    {
+                        "name": "b?",
+                        "type": "number",
+                        "description": "Blue multiply",
+                        "optional": true
+                    },
+                    {
+                        "name": "a?",
+                        "type": "number",
+                        "description": "Alpha channel",
+                        "optional": true
+                    },
+                    {
+                        "name": "probability",
+                        "type": "number",
+                        "description": "Dithering probability between zero and one, default is 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Solid red paint?\nPaint(Vec(0, 10, 0), 0.5, 1, 0, 0, 1)",
+                "status": "undocumented, unconfirmed, 1.5.0"
+            },
+            {
+                "name": "MakeHole",
+                "description": "Make a hole in the environment. Radius is given in meters. Soft materials: glass, foliage, dirt, wood, plaster and plastic. Medium materials: concrete, brick and weak metal. Hard materials: hard metal and hard masonry.",
+                "tags": ["Vec", "Boolean", "Number"],
+                "inputs": [
+                    {
+                        "name": "position",
+                        "type": "table",
+                        "description": "Hole center point"
+                    },
+                    {
+                        "name": "r0",
+                        "type": "number",
+                        "description": "Hole radius for soft materials"
+                    },
+                    {
+                        "name": "r1",
+                        "type": "number",
+                        "description": "Hole radius for medium materials. May not be bigger than r0. Default zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "r2",
+                        "type": "number",
+                        "description": "Hole radius for hard materials. May not be bigger than r1. Default zero.",
+                        "optional": true
+                    },
+                    {
+                        "name": "silent",
+                        "type": "boolean",
+                        "description": "Make hole without playing any break sounds.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "count",
+                        "type": "number",
+                        "description": "Number of voxels that was cut out. This will be zero if there were no changes to any shape."
+                    }
+                ],
+                "example": "MakeHole(pos, 1.2, 1.0)"
+            },
+            {
+                "name": "Explosion",
+                "description": "",
+                "tags": ["Vec", "Number"],
+                "inputs": [
+                    {
+                        "name": "pos",
+                        "type": "table",
+                        "description": "Position in world space as vector"
+                    },
+                    {
+                        "name": "size",
+                        "type": "number",
+                        "description": "Explosion size from 0.5 to 4.0"
+                    }
+                ],
+                "outputs": [],
+                "example": "Explosion(Vec(0, 10, 0), 1)"
+            },
+            {
+                "name": "SpawnFire",
+                "description": "",
+                "tags": ["Vec", "Number", "Fire"],
+                "inputs": [
+                    {
+                        "name": "pos",
+                        "type": "table",
+                        "description": "Position in world space as vector"
+                    }
+                ],
+                "outputs": [],
+                "example": "SpawnFire(Vec(0, 10, 0))"
+            },
+            {
+                "name": "GetFireCount",
+                "description": "",
+                "tags": ["Number", "Getter", "Fire"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "count",
+                        "type": "number",
+                        "description": "Number of active fires in level"
+                    }
+                ],
+                "example": "local c = GetFireCount()"
+            },
+            {
+                "name": "QueryClosestFire",
+                "description": "",
+                "tags": ["Number", "Getter", "Vec", "Boolean", "Fire"],
+                "inputs": [
+                    {
+                        "name": "origin",
+                        "type": "table",
+                        "description": "World space position as vector"
+                    },
+                    {
+                        "name": "maxDist",
+                        "type": "number",
+                        "description": "Maximum search distance"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "hit",
+                        "type": "boolean",
+                        "description": "A fire was found within search distance"
+                    },
+                    {
+                        "name": "pos",
+                        "type": "table",
+                        "description": "Position of closest fire"
+                    }
+                ],
+                "example": "local hit, pos = QueryClosestFire(GetPlayerTransform().pos, 5.0)\nif hit then\n    --There is a fire within 5 meters to the player. Mark it with a debug cross.\n    DebugCross(pos)\nend"
+            },
+            {
+                "name": "QueryAabbFireCount",
+                "description": "",
+                "tags": ["Number", "Getter", "Vec", "Fire"],
+                "inputs": [
+                    {
+                        "name": "min",
+                        "type": "table",
+                        "description": "Aabb minimum point"
+                    },
+                    {
+                        "name": "max",
+                        "type": "table",
+                        "description": "Aabb maximum point"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "count",
+                        "type": "number",
+                        "description": "Number of active fires in bounding box"
+                    }
+                ],
+                "example": "local count = QueryAabbFireCount(Vec(0,0,0), Vec(10,10,10))"
+            },
+            {
+                "name": "RemoveAabbFires",
+                "description": "",
+                "tags": ["Number", "Vec", "Fire"],
+                "inputs": [
+                    {
+                        "name": "min",
+                        "type": "table",
+                        "description": "Aabb minimum point"
+                    },
+                    {
+                        "name": "max",
+                        "type": "table",
+                        "description": "Aabb maximum point"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "count",
+                        "type": "number",
+                        "description": "Number of fires removed"
+                    }
+                ],
+                "example": "local count = RemoveAabbFires(Vec(0,0,0), Vec(10,10,10))"
+            },
+            {
+                "name": "GetCameraTransform",
+                "description": "",
+                "tags": ["Transform", "Camera"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "transform",
+                        "type": "table",
+                        "description": "Current camera transform"
+                    }
+                ],
+                "example": "local t = GetCameraTransform()"
+            },
+            {
+                "name": "SetCameraTransform",
+                "description": "Override current camera transform for this frame. Call continuously to keep overriding.",
+                "tags": ["Transform", "Camera", "Fov"],
+                "inputs": [
+                    {
+                        "name": "transform",
+                        "type": "table",
+                        "description": "Desired camera transform"
+                    },
+                    {
+                        "name": "fov",
+                        "type": "number",
+                        "description": "Optional horizontal field of view in degrees (default: 90)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "SetCameraTransform(Transform(Vec(0, 10, 0), QuatEuler(0, 90, 0)))"
+            },
+            {
+                "name": "SetCameraFov",
+                "description": "Override field of view for the next frame for all camera modes, except when explicitly set in SetCameraTransform",
+                "tags": ["Camera", "Fov"],
+                "inputs": [
+                    {
+                        "name": "degrees",
+                        "type": "number",
+                        "description": "Horizontal field of view in degrees (10-170)"
+                    }
+                ],
+                "outputs": [],
+                "example": "function tick()\n    SetCameraFov(60)\nend"
+            },
+            {
+                "name": "SetCameraDof",
+                "description": "Override depth of field for the next frame for all camera modes. Depth of field will be used even if turned off in options.",
+                "tags": ["Camera", "Dof"],
+                "inputs": [
+                    {
+                        "name": "distance",
+                        "type": "number",
+                        "description": "Depth of field distance"
+                    },
+                    {
+                        "name": "amount",
+                        "type": "number",
+                        "description": "Optional amount of blur (default 1.0)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Set depth of field to 10 meters\nSetCameraDof(10)"
+            },
+            {
+                "name": "PointLight",
+                "description": "Add a temporary point light to the world for this frame. Call continuously for a steady light.",
+                "tags": ["Light", "Color", "Number", "Vec"],
+                "inputs": [
+                    {
+                        "name": "pos",
+                        "type": "table",
+                        "description": "World space light position"
+                    },
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue"
+                    },
+                    {
+                        "name": "intensity",
+                        "type": "number",
+                        "description": "Intensity. Default is 1.0.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Pulsating, yellow light above world origo\nlocal intensity = 3 + math.sin(GetTime())\nPointLight(Vec(0, 5, 0), 1, 1, 0, intensity)"
+            },
+            {
+                "name": "SetTimeScale",
+                "description": "Experimental. Scale time in order to make a slow-motion effect. Audio will also be affected. Note that this will affect physics behavior and is not intended for gameplay purposes. Calling this function will slow down time for the next frame only. Call every frame from tick function to get steady slow-motion.",
+                "tags": ["Setter", "Time", "Number"],
+                "inputs": [
+                    {
+                        "name": "scale",
+                        "type": "number",
+                        "description": "Time scale 0.1 to 1.0"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Slow down time when holding down a key\nif InputDown('t') then\n    SetTimeScale(0.2)\nend"
+            },
+            {
+                "name": "SetEnviormentDefault",
+                "description": "Reset the environment properties to default. This is often useful before setting up a custom environment.",
+                "tags": ["Setter", "Enviornment"],
+                "inputs": [],
+                "outputs": [],
+                "example": "SetEnvironmentDefault()"
+            },
+            {
+                "name": "SetEnviormentProperty",
+                "description": "This function is used for manipulating the environment properties. The available properties are exactly the same as in the editor, except for \"snowonground\" which is not currently supported.",
+                "tags": ["Setter", "Enviornment"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Property name"
+                    },
+                    {
+                        "name": "value0",
+                        "type": "varying",
+                        "description": "Property value (type depends on property)"
+                    },
+                    {
+                        "name": "value1",
+                        "type": "varying",
+                        "description": "Extra property value (only some properties)",
+                        "optional": true
+                    },
+                    {
+                        "name": "value2",
+                        "type": "varying",
+                        "description": "Extra property value (only some properties)",
+                        "optional": true
+                    },
+                    {
+                        "name": "value3",
+                        "type": "varying",
+                        "description": "Extra property value (only some properties)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "SetEnvironmentProperty(\"skybox\", \"cloudy.dds\")\nSetEnvironmentProperty(\"rain\", 0.7)\nSetEnvironmentProperty(\"fogcolor\", 0.5, 0.5, 0.8)\nSetEnvironmentProperty(\"nightlight\", false)"
+            },
+            {
+                "name": "GetEnviormentProperty",
+                "description": "This function is used for querying the current environment properties. The available properties are exactly the same as in the editor.",
+                "tags": ["Getter", "Enviornment"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Property name"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value0",
+                        "type": "varying",
+                        "description": "Property value (type depends on property)"
+                    },
+                    {
+                        "name": "value1",
+                        "type": "varying",
+                        "description": "Property value (only some properties)"
+                    },
+                    {
+                        "name": "value2",
+                        "type": "varying",
+                        "description": "Property value (only some properties)"
+                    },
+                    {
+                        "name": "value3",
+                        "type": "varying",
+                        "description": "Property value (only some properties)"
+                    },
+                    {
+                        "name": "value4",
+                        "type": "varying",
+                        "description": "Property value (only some properties)"
+                    }
+                ],
+                "example": "local skyboxPath = GetEnvironmentProperty(\"skybox\")\nlocal rainValue = GetEnvironmentProperty(\"rain\")\nlocal r,g,b = GetEnvironmentProperty(\"fogcolor\")\nlocal enabled = GetEnvironmentProperty(\"nightlight\")"
+            },
+            {
+                "name": "SetPostProcessingDefault",
+                "description": "Reset the post processing properties to default.",
+                "tags": ["Setter", "Post"],
+                "inputs": [],
+                "outputs": [],
+                "example": "SetPostProcessingDefault()"
+            },
+            {
+                "name": "SetPostProcessingProperty",
+                "description": "This function is used for manipulating the post processing properties. The available properties are exactly the same as in the editor.",
+                "tags": ["Setter", "Post"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Property name"
+                    },
+                    {
+                        "name": "value0",
+                        "type": "varying",
+                        "description": "Property value (type depends on property)"
+                    },
+                    {
+                        "name": "value1",
+                        "type": "varying",
+                        "description": "Extra property value (only some properties)",
+                        "optional": true
+                    },
+                    {
+                        "name": "value2",
+                        "type": "varying",
+                        "description": "Extra property value (only some properties)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Sepia post processing\nSetPostProcessingProperty(\"saturation\", 0.4)\nSetPostProcessingProperty(\"colorbalance\", 1.3, 1.0, 0.7)"
+            },
+            {
+                "name": "GetPostProcessingProperty",
+                "description": "This function is used for querying the current post processing properties. The available properties are exactly the same as in the editor.",
+                "tags": ["Getter", "Post"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Property name"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value0",
+                        "type": "varying",
+                        "description": "Property value (type depends on property)"
+                    },
+                    {
+                        "name": "value1",
+                        "type": "varying",
+                        "description": "Property value (only some properties)"
+                    },
+                    {
+                        "name": "value2",
+                        "type": "varying",
+                        "description": "Property value (only some properties)"
+                    }
+                ],
+                "example": "local saturation = GetPostProcessingProperty(\"saturation\")\nlocal r,g,b = GetPostProcessingProperty(\"colorbalance\")"
+            },
+            {
+                "name": "DrawLine",
+                "description": "Draw a 3D line. In contrast to DebugLine, it will not show behind objects. Default color is white.",
+                "tags": ["Vec", "Color"],
+                "inputs": [
+                    {
+                        "name": "p0",
+                        "type": "table",
+                        "description": "World space point as vector"
+                    },
+                    {
+                        "name": "p1",
+                        "type": "table",
+                        "description": "World space point as vector"
+                    },
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red",
+                        "optional": true
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green",
+                        "optional": true
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue",
+                        "optional": true
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Draw white debug line\nDrawLine(Vec(0, 0, 0), Vec(-10, 5, -10))\n\n\n--Draw red debug line\nDrawLine(Vec(0, 0, 0), Vec(10, 5, 10), 1, 0, 0)"
+            },
+            {
+                "name": "DebugLine",
+                "description": "Draw a 3D debug overlay line in the world. Default color is white.",
+                "tags": ["Vec", "Color", "Debug"],
+                "inputs": [
+                    {
+                        "name": "p0",
+                        "type": "table",
+                        "description": "World space point as vector"
+                    },
+                    {
+                        "name": "p1",
+                        "type": "table",
+                        "description": "World space point as vector"
+                    },
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red",
+                        "optional": true
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green",
+                        "optional": true
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue",
+                        "optional": true
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Draw white debug line\nDebugLine(Vec(0, 0, 0), Vec(-10, 5, -10))\n\n--Draw red debug line\nDebugLine(Vec(0, 0, 0), Vec(10, 5, 10), 1, 0, 0)"
+            },
+            {
+                "name": "DebugCross",
+                "description": "Draw a debug cross in the world to highlight a location. Default color is white.",
+                "tags": ["Vec", "Color", "Debug"],
+                "inputs": [
+                    {
+                        "name": "p0",
+                        "type": "table",
+                        "description": "World space point as vector"
+                    },
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red",
+                        "optional": true
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green",
+                        "optional": true
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue",
+                        "optional": true
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "DebugCross(Vec(10, 5, 5))"
+            },
+            {
+                "name": "DebugWatch",
+                "description": "Show a named valued on screen for debug purposes. Up to 32 values can be shown simultaneously. Values updated the current frame are drawn opaque. Old values are drawn transparent in white.\n\nThe function will also recognize vectors, quaternions and transforms as second argument and convert them to strings automatically.",
+                "tags": ["String", "Number", "Vec", "Transform", "Quat", "Debug"],
+                "inputs": [
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "description": "Name"
+                    },
+                    {
+                        "name": "value",
+                        "type": "varying",
+                        "description": "Value"
+                    }
+                ],
+                "outputs": [],
+                "example": "local t = 5\nDebugWatch(\"time\", t)"
+            },
+            {
+                "name": "DebugPrint",
+                "description": "Display message on screen. The last 20 lines are displayed.",
+                "tags": ["String", "Number", "Vec", "Transform", "Quat", "Debug"],
+                "inputs": [
+                    {
+                        "name": "message",
+                        "type": "varying",
+                        "description": "Message to display"
+                    }
+                ],
+                "outputs": [],
+                "example": "DebugPrint(\"time\")"
+            }
+        ]
+    },
+    {
+        "category": "User Interface",
+        "description": "The user interface functions are used for drawing interactive 2D graphics and can only be called from the draw function of a script. The ui functions are designed with the immediate mode gui paradigm in mind and uses a cursor and state stack. Pushing and popping the stack is cheap and designed to be called often.",
+        "functions": [
+            {
+                "name": "UiMakeInteractive",
+                "description": "Calling this function will disable game input, bring up the mouse pointer and allow Ui interaction with the calling script without pausing the game. This can be useful to make interactive user interfaces from scripts while the game is running. Call this continuously every frame as long as Ui interaction is desired.",
+                "inputs": [],
+                "outputs": [],
+                "example": "function draw()\n   UiMakeInteractive()\nend"
+            },
+            {
+                "name": "UiPush",
+                "description": "Push state onto stack. This is used in combination with UiPop to remember a state and restore to that state later.",
+                "inputs": [],
+                "outputs": [],
+                "example": "UiColor(1,0,0)\nUiText(\"Red\")\nUiPush()\n    UiColor(0,1,0)\n    UiText(\"Green\")\nUiPop()\nUiText(\"Red\")"
+            },
+            {
+                "name": "UiPop",
+                "description": "Pop state from stack and make it the current one. This is used in combination with UiPush to remember a previous state and go back to it later.",
+                "inputs": [],
+                "outputs": [],
+                "example": "UiColor(1,0,0)\nUiText(\"Red\")\nUiPush()\n    UiColor(0,1,0)\n    UiText(\"Green\")\nUiPop()\nUiText(\"Red\")"
+            },
+            {
+                "name": "UiWidth",
+                "description": "",
+                "tags": ["Getter"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "width",
+                        "type": "number",
+                        "description": "Width of draw context"
+                    }
+                ],
+                "example": "local w = UiWidth()"
+            },
+            {
+                "name": "UiHeight",
+                "description": "",
+                "tags": ["Getter"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "height",
+                        "type": "number",
+                        "description": "Height of draw context"
+                    }
+                ],
+                "example": "local h = UiHeight()"
+            },
+            {
+                "name": "UiCenter",
+                "description": "",
+                "tags": ["Getter"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "center",
+                        "type": "number",
+                        "description": "Half width of draw context"
+                    }
+                ],
+                "example": "local c = UiCenter()\n--Same as\nlocal c = UiWidth() / 2"
+            },
+            {
+                "name": "UiMiddle",
+                "description": "",
+                "tags": ["Getter"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "middle",
+                        "type": "number",
+                        "description": "Half height of draw context"
+                    }
+                ],
+                "example": "local m = UiMiddle()\n--Same as\nlocal m = UiHeight() / 2"
+            },
+            {
+                "name": "UiColor",
+                "description": "",
+                "tags": ["Color", "Number"],
+                "inputs": [
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red channel"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green channel"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue channel"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha channel. Default 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Set color yellow\nUiColor(1,1,0)"
+            },
+            {
+                "name": "UiColorFilter",
+                "description": "Color filter, multiplied to all future colors in this scope",
+                "tags": ["Color", "Number"],
+                "inputs": [
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red channel"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green channel"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue channel"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha channel. Default 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "UiPush()\n    --Draw menu in transparent, yellow color tint\n    UiColorFilter(1, 1, 0, 0.5)\n    drawMenu()\nUiPop()"
+            },
+            {
+                "name": "UiTranslate",
+                "description": "Translate cursor",
+                "inputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "X component"
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Y component"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiPush()\n    UiTranslate(100, 0)\n    UiText(\"Indented\")\nUiPop()"
+            },
+            {
+                "name": "UiRotate",
+                "description": "Rotate cursor",
+                "inputs": [
+                    {
+                        "name": "angle",
+                        "type": "number",
+                        "description": "Angle in degrees, counter clockwise"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiPush()\n    UiRotate(45)\n    UiText(\"Rotated\")\nUiPop()"
+            },
+            {
+                "name": "UiScale",
+                "description": "Scale cursor either uniformly (one argument) or non-uniformly (two arguments)",
+                "inputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "X component"
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Y component. Default value is x",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "UiPush()\n    UiScale(2)\n    UiText(\"Double size\")\nUiPop()"
+            },
+            {
+                "name": "UiWindow",
+                "description": "Set up new bounds. Calls to UiWidth, UiHeight, UiCenter and UiMiddle will operate in the context of the window size. If clip is set to true, contents of window will be clipped to bounds (only works properly for non-rotated windows).",
+                "inputs": [
+                    {
+                        "name": "width",
+                        "type": "number",
+                        "description": "Window width"
+                    },
+                    {
+                        "name": "height",
+                        "type": "number",
+                        "description": "Window height"
+                    },
+                    {
+                        "name": "clip",
+                        "type": "boolean",
+                        "description": "Clip content outside window. Default is false.",
+                        "optional": true
+                    },
+                    {
+                        "name": "inherit",
+                        "type": "boolean",
+                        "description": "Inherit current clip region (for nested clip regions)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "UiPush()\n    UiWindow(400, 200)\n    local w = UiWidth()\n    --w is now 400\nUiPop()"
+            },
+            {
+                "name": "UiSafeMargins",
+                "description": "Return a safe drawing area that will always be visible regardless of display aspect ratio. The safe drawing area will always be 1920 by 1080 in size. This is useful for setting up a fixed size UI.",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "x0",
+                        "type": "number",
+                        "description": "Left"
+                    },
+                    {
+                        "name": "y0",
+                        "type": "number",
+                        "description": "Top"
+                    },
+                    {
+                        "name": "x1",
+                        "type": "number",
+                        "description": "Right"
+                    },
+                    {
+                        "name": "y1",
+                        "type": "number",
+                        "description": "Bottom"
+                    }
+                ],
+                "example": "function draw()\n    local x0, y0, x1, y1 = UiSafeMargins()\n    UiTranslate(x0, y0)\n    UiWindow(x1-x0, y1-y0, true)\n    --The drawing area is now 1920 by 1080 in the center of screen\n    drawMenu()\nend"
+            },
+            {
+                "name": "UiAlign",
+                "description": "The alignment determines how content is aligned with respect to the cursor.\n\nTODO: Alignment table\n\nAlignment can contain combinations of these, for instance: \"center middle\", \"left top\", \"center top\", etc. If horizontal or vertical alginment is omitted it will depend on the element drawn. Text, for instance has default vertical alignment at baseline.",
+                "inputs": [
+                    {
+                        "name": "alignment",
+                        "type": "string",
+                        "description": "Alignment keywords"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiAlign(\"left\")\nUiText(\"Aligned left at baseline\")\n\nUiAlign(\"center middle\")\nUiText(\"Fully centered\")"
+            },
+            {
+                "name": "UiModalBegin",
+                "description": "Disable input for everything, except what's between UiModalBegin and UiModalEnd (or if modal state is popped)",
+                "inputs": [],
+                "outputs": [],
+                "example": "UiModalBegin()\nif UiTextButton(\"Okay\") then\n    --All other interactive ui elements except this one are disabled\nend\nUiModalEnd()\n\n--This is also okay\nUiPush()\n    UiModalBegin()\n    if UiTextButton(\"Okay\") then\n        --All other interactive ui elements except this one are disabled\n    end\nUiPop()\n--No longer modal"
+            },
+            {
+                "name": "UiModalEnd",
+                "description": "Disable input for everything, except what's between UiModalBegin and UiModalEnd Calling this function is optional. Modality is part of the current state and will be lost if modal state is popped.",
+                "inputs": [],
+                "outputs": [],
+                "example": "UiModalBegin()\nif UiTextButton(\"Okay\") then\n    --All other interactive ui elements except this one are disabled\nend\nUiModalEnd()"
+            },
+            {
+                "name": "UiDisableInput",
+                "description": "Disable input",
+                "tags": ["Input"],
+                "inputs": [],
+                "outputs": [],
+                "example": "UiPush()\n    UiDisableInput()\n    if UiTextButton(\"Okay\") then\n        --Will never happen\n    end\nUiPop()"
+            },
+            {
+                "name": "UiEnableInput",
+                "description": "Enable input that has been previously disabled",
+                "tags": ["Input"],
+                "inputs": [],
+                "outputs": [],
+                "example": "UiDisableInput()\nif UiTextButton(\"Okay\") then\n    --Will never happen\nend\n\nUiDisableInput()\nif UiTextButton(\"Okay\") then\n    --Will never happen\nend"
+            },
+            {
+                "name": "UiReceivesInput",
+                "description": "This function will check current state receives input. This is the case if input is not explicitly disabled with (with UiDisableInput) and no other state is currently modal (with UiModalBegin). Input functions and UI elements already do this check internally, but it can sometimes be useful to read the input state manually to trigger things in the UI.",
+                "tags": ["Input"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "receives",
+                        "type": "boolean",
+                        "description": "True if current context receives input"
+                    }
+                ],
+                "example": "if UiReceivesInput() then\n    highlightItemAtMousePointer()\nend"
+            },
+            {
+                "name": "UiGetMousePos",
+                "description": "Get mouse pointer position relative to the cursor",
+                "tags": ["Getter", "XY"],
+                "inputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "X coordinate"
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Y coordinate"
+                    }
+                ],
+                "outputs": [],
+                "example": "local x, y = UiGetMousePos()"
+            },
+            {
+                "name": "UiIsMouseInRect",
+                "description": "Check if mouse pointer is within rectangle. Note that this function respects alignment.",
+                "tags": ["Boolean", "Size"],
+                "inputs": [
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Width"
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Height"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "inside",
+                        "type": "boolean",
+                        "description": "True if mouse pointer is within rectangle"
+                    }
+                ],
+                "example": "if UiIsMouseInRect(100, 100) then\n    -- mouse pointer is in rectangle\nend"
+            },
+            {
+                "name": "UiWorldToPixel",
+                "description": "Convert world space position to user interface X and Y coordinate relative to the cursor. The distance is in meters and positive if in front of camera, negative otherwise.",
+                "tags": ["XY", "Vec", "Number"],
+                "inputs": [
+                    {
+                        "name": "point",
+                        "type": "table",
+                        "description": "3D world position as vector"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "X coordinate"
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Y coordinate"
+                    },
+                    {
+                        "name": "distance",
+                        "type": "number",
+                        "description": "Distance to point"
+                    }
+                ],
+                "example": "local x, y, dist = UiWorldToPixel(point)\nif dist > 0 then\n    UiTranslate(x, y)\n    UiText(\"Label\")\nend"
+            },
+            {
+                "name": "UiPixelToWorld",
+                "description": "Convert X and Y UI coordinate to a world direction, as seen from current camera. This can be used to raycast into the scene from the mouse pointer position.",
+                "tags": ["XY", "Vec"],
+                "inputs": [
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "X coordinate"
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "Y coordinate"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "direction",
+                        "type": "table",
+                        "description": "3D world direction as vector"
+                    }
+                ],
+                "example": "UiMakeInteractive()\nlocal x, y = UiGetMousePos()\nlocal dir = UiPixelToWorld(x, y)\nlocal pos = GetCameraTransform().pos\nlocal hit, dist = QueryRaycast(pos, dir, 100)\nif hit then\n    DebugPrint(\"hit distance: \" .. dist)\nend"
+            },
+            {
+                "name": "UiBlur",
+                "description": "Perform a gaussian blur on current screen content",
+                "tags": ["Number"],
+                "inputs": [
+                    {
+                        "name": "amount",
+                        "type": "number",
+                        "description": "Blur amount (0.0 to 1.0)"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiBlur(1.0)\ndrawMenu()"
+            },
+            {
+                "name": "UiFont",
+                "description": "",
+                "tags": ["String", "Font", "Text"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to TTF font file"
+                    },
+                    {
+                        "name": "size",
+                        "type": "number",
+                        "description": "Font size (10 to 100)"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiFont(\"bold.ttf\", 24)\nUiText(\"Hello\")"
+            },
+            {
+                "name": "UiFontHeight",
+                "description": "",
+                "tags": ["Font"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "size",
+                        "type": "number",
+                        "description": "Font size"
+                    }
+                ],
+                "example": "local h = UiFontHeight()"
+            },
+            {
+                "name": "UiText",
+                "description": "",
+                "tags": ["String", "Size", "XY", "Boolean", "Text"],
+                "inputs": [
+                    {
+                        "name": "text",
+                        "type": "string",
+                        "description": "Print text at cursor location"
+                    },
+                    {
+                        "name": "move",
+                        "type": "boolean",
+                        "description": "Automatically move cursor vertically. Default false.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Width of text"
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Height of text"
+                    },
+                    {
+                        "name": "x",
+                        "type": "number",
+                        "description": "End x-position of text. Only valid when \"advance cursor\" is false"
+                    },
+                    {
+                        "name": "y",
+                        "type": "number",
+                        "description": "End y-position of text. Only valid when \"advance cursor\" is false"
+                    }
+                ],
+                "example": "UiFont(\"bold.ttf\", 24)\nUiText(\"Hello\")\n\n...\n\n--Automatically advance cursor\nUiText(\"First line\", true)\nUiText(\"Second line\", true)"
+            },
+            {
+                "name": "UiGetTextSize",
+                "description": "",
+                "tags": ["Font", "String", "Size"],
+                "inputs": [
+                    {
+                        "name": "text",
+                        "type": "string",
+                        "description": "A text string"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Width of text"
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Height of text"
+                    }
+                ],
+                "example": "UiFont(\"regular.ttf\", 16)\nlocal w, h = UiGetTextSize(\"Some text\")"
+            },
+            {
+                "name": "UiWordWrap",
+                "description": "",
+                "tags": ["Font", "String"],
+                "inputs": [
+                    {
+                        "name": "width",
+                        "type": "number",
+                        "description": "Maximum width of text"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiWordWrap(200)\nUiText(\"Some really long text that will get wrapped into several lines\")"
+            },
+            {
+                "name": "UiTextOutline",
+                "description": "",
+                "tags": ["Text", "String", "Color"],
+                "inputs": [
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red channel"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green channel"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue channel"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha channel"
+                    },
+                    {
+                        "name": "thickness",
+                        "type": "number",
+                        "description": "Outline thickness. Default is 0.1",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Black outline, standard thickness\nUiTextOutline(0,0,0,1)\nUiText(\"Text with outline\")"
+            },
+            {
+                "name": "UiTextShadow",
+                "description": "",
+                "tags": ["Text", "String", "Color"],
+                "inputs": [
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red channel"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green channel"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue channel"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha channel"
+                    },
+                    {
+                        "name": "distance",
+                        "type": "number",
+                        "description": "Shadow distance. Default is 1.0",
+                        "optional": true
+                    },
+                    {
+                        "name": "blur",
+                        "type": "number",
+                        "description": "Shadow blur. Default is 0.5",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "--Black drop shadow, 50% transparent, distance 2\nUiTextShadow(0, 0, 0, 0.5, 2.0)\nUiText(\"Text with drop shadow\")"
+            },
+            {
+                "name": "UiRect",
+                "description": "Draw solid rectangle at cursor position",
+                "tags": ["Size"],
+                "inputs": [
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Width"
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Height"
+                    }
+                ],
+                "outputs": [],
+                "example": "--Draw full-screen black rectangle\nUiColor(0, 0, 0)\nUiRect(UiWidth(), UiHeight())\n\n--Draw smaller, red, rotating rectangle in center of screen\nUiPush()\n    UiColor(1, 0, 0)\n    UiTranslate(UiCenter(), UiMiddle())\n    UiRotate(GetTime())\n    UiAlign(\"center middle\")\n    UiRect(100, 100)\nUiPop()"
+            },
+            {
+                "name": "UiImage",
+                "description": "Draw image at cursor position. If x0, y0, x1, y1 is provided a cropped version will be drawn in that coordinate range.",
+                "tags": ["Size", "Path", "String", "XY", "Image"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to image (PNG or JPG format)"
+                    },
+                    {
+                        "name": "x0",
+                        "type": "number",
+                        "description": "Lower x coordinate (default is 0)",
+                        "optional": true
+                    },
+                    {
+                        "name": "y0",
+                        "type": "number",
+                        "description": "Lower y coordinate (default is 0)",
+                        "optional": true
+                    },
+                    {
+                        "name": "x1",
+                        "type": "number",
+                        "description": "Upper x coordinate (default is image width)",
+                        "optional": true
+                    },
+                    {
+                        "name": "y1",
+                        "type": "number",
+                        "description": "Upper y coordinate (default is image height)",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Width of drawn image"
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Height of drawn image"
+                    }
+                ],
+                "example": "--Draw image in center of screen\nUiPush()\n    UiTranslate(UiCenter(), UiMiddle())\n    UiAlign(\"center middle\")\n    UiImage(\"test.png\")\nUiPop()"
+            },
+            {
+                "name": "UiGetImageSize",
+                "description": "Get image size",
+                "tags": ["Size", "Path", "String", "Image"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to image (PNG or JPG format)"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Image width"
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Image height"
+                    }
+                ],
+                "example": "local w,h = UiGetImageSize(\"test.png\")"
+            },
+            {
+                "name": "UiImageBox",
+                "description": "Draw 9-slice image at cursor position. Width should be at least 2*borderWidth. Height should be at least 2*borderHeight.",
+                "tags": ["Image", "String", "Path", "Size"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to image (PNG or JPG format)"
+                    },
+                    {
+                        "name": "width",
+                        "type": "number",
+                        "description": "Width"
+                    },
+                    {
+                        "name": "height",
+                        "type": "number",
+                        "description": "Height"
+                    },
+                    {
+                        "name": "borderWidth",
+                        "type": "number",
+                        "description": "Border width"
+                    },
+                    {
+                        "name": "borderHeight",
+                        "type": "number",
+                        "description": "Border height"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiImageBox(\"menu-frame.png\", 200, 200, 10, 10)"
+            },
+            {
+                "name": "UiSound",
+                "description": "UI sounds are not affected by acoustics simulation. Use LoadSound / PlaySound for that.",
+                "tags": ["Sound", "String", "Path", "Number"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to sound file (OGG format)"
+                    },
+                    {
+                        "name": "volume",
+                        "type": "number",
+                        "description": "Playback volume. Default 1.0",
+                        "optional": true
+                    },
+                    {
+                        "name": "pitch",
+                        "type": "number",
+                        "description": "Playback pitch. Default 1.0",
+                        "optional": true
+                    },
+                    {
+                        "name": "pan",
+                        "type": "number",
+                        "description": "Playback stereo panning (-1.0 to 1.0). Default 0.0.",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "UiSound(\"click.ogg\")"
+            },
+            {
+                "name": "UiSoundLoop",
+                "description": "Call this continuously to keep playing loop. UI sounds are not affected by acoustics simulation. Use LoadLoop / PlayLoop for that.",
+                "tags": ["Sound", "String", "Path", "Number"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to sound file (OGG format)"
+                    },
+                    {
+                        "name": "volume",
+                        "type": "number",
+                        "description": "Playback volume. Default 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "if animating then\n    UiSoundLoop(\"screech.ogg\")\nend"
+            },
+            {
+                "name": "UiMute",
+                "description": "Mute game audio and optionally music for the next frame. Call continuously to stay muted.",
+                "tags": ["Sound", "Number", "Boolean"],
+                "inputs": [
+                    {
+                        "name": "amount",
+                        "type": "number",
+                        "description": "Mute by this amount (0.0 to 1.0)"
+                    },
+                    {
+                        "name": "music",
+                        "type": "boolean",
+                        "description": "Mute music as well",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "if menuOpen then\n    UiMute(1.0)\nend"
+            },
+            {
+                "name": "UiButtonImageBox",
+                "description": "Set up 9-slice image to be used as background for buttons.",
+                "tags": ["Image", "String", "Path", "Size", "Color", "Button"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Path to image (PNG or JPG format)"
+                    },
+                    {
+                        "name": "borderWidth",
+                        "type": "number",
+                        "description": "Border width"
+                    },
+                    {
+                        "name": "borderHeight",
+                        "type": "number",
+                        "description": "Border height"
+                    },
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red multiply. Default 1.0",
+                        "optional": true
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green multiply. Default 1.0",
+                        "optional": true
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue multiply. Default 1.0",
+                        "optional": true
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha channel. Default 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "UiButtonImageBox(\"button-9slice.png\", 10, 10)\nif UiTextButton(\"Test\") then\n    ...\nend"
+            },
+            {
+                "name": "UiButtonHoverColor",
+                "description": "Button color filter when hovering mouse pointer.",
+                "tags": ["Color", "Button"],
+                "inputs": [
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red multiply"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green multiply"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue multiply"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha channel. Default 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "UiButtonHoverColor(1, 0, 0)\nif UiTextButton(\"Test\") then\n    ...\nend"
+            },
+            {
+                "name": "UiButtonPressColor",
+                "description": "Button color filter when pressing down.",
+                "tags": ["Color", "Button"],
+                "inputs": [
+                    {
+                        "name": "r",
+                        "type": "number",
+                        "description": "Red multiply"
+                    },
+                    {
+                        "name": "g",
+                        "type": "number",
+                        "description": "Green multiply"
+                    },
+                    {
+                        "name": "b",
+                        "type": "number",
+                        "description": "Blue multiply"
+                    },
+                    {
+                        "name": "a",
+                        "type": "number",
+                        "description": "Alpha channel. Default 1.0",
+                        "optional": true
+                    }
+                ],
+                "outputs": [],
+                "example": "UiButtonPressColor(0, 1, 0)\nif UiTextButton(\"Test\") then\n    ...\nend"
+            },
+            {
+                "name": "UiButtonPressDist",
+                "description": "The button offset when being pressed.",
+                "tags": ["Number", "Button"],
+                "inputs": [
+                    {
+                        "name": "dist",
+                        "type": "number",
+                        "description": "Press distance"
+                    }
+                ],
+                "outputs": [],
+                "example": "UiButtonPressDistance(4)\nif UiTextButton(\"Test\") then\n    ...\nend"
+            },
+            {
+                "name": "UiTextButton",
+                "description": "",
+                "tags": ["Boolean", "Text", "String", "Size", "Button"],
+                "inputs": [
+                    {
+                        "name": "text",
+                        "type": "string",
+                        "description": "Text on button"
+                    },
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Button width",
+                        "optional": true
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Button height",
+                        "optional": true
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "pressed",
+                        "type": "boolean",
+                        "description": "True if user clicked button"
+                    }
+                ],
+                "example": "if UiTextButton(\"Test\") then\n    ...\nend"
+            },
+            {
+                "name": "UiImageButton",
+                "description": "",
+                "tags": ["Boolean", "Path", "String", "Button"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Image path (PNG or JPG file)"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "pressed",
+                        "type": "boolean",
+                        "description": "True if user clicked button"
+                    }
+                ],
+                "example": "if UiImageButton(\"image.png\") then\n    ...\nend"
+            },
+            {
+                "name": "UiBlankButton",
+                "description": "",
+                "tags": ["Boolean", "Text", "String", "Size", "Button"],
+                "inputs": [
+                    {
+                        "name": "w",
+                        "type": "number",
+                        "description": "Button width"
+                    },
+                    {
+                        "name": "h",
+                        "type": "number",
+                        "description": "Button height"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "pressed",
+                        "type": "boolean",
+                        "description": "True if user clicked button"
+                    }
+                ],
+                "example": "if UiBlankButton(30, 30) then\n    ...\nend"
+            },
+            {
+                "name": "UiSlider",
+                "description": "",
+                "tags": ["Boolean", "Path", "String", "Number"],
+                "inputs": [
+                    {
+                        "name": "path",
+                        "type": "string",
+                        "description": "Image path (PNG or JPG file)"
+                    },
+                    {
+                        "name": "axis",
+                        "type": "string",
+                        "description": "Drag axis, must be \"x\" or \"y\""
+                    },
+                    {
+                        "name": "current",
+                        "type": "number",
+                        "description": "Current value"
+                    },
+                    {
+                        "name": "min",
+                        "type": "number",
+                        "description": "Minimum value"
+                    },
+                    {
+                        "name": "max",
+                        "type": "number",
+                        "description": "Maximum value"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "value",
+                        "type": "number",
+                        "description": "New value, same as current if not changed"
+                    },
+                    {
+                        "name": "done",
+                        "type": "boolean",
+                        "description": "True if user is finished changing (released slider)"
+                    }
+                ],
+                "example": "value = UiSlider(\"dot.png\", \"x\", value, 0, 100)"
+            },
+            {
+                "name": "UiGetScreen",
+                "description": "",
+                "tags": ["Handle", "String", "Screen"],
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "handle",
+                        "type": "number",
+                        "description": "Handle to the screen running this script or zero if none."
+                    }
+                ],
+                "example": "--Turn off screen running current script\nscreen = UiGetScreen()\nSetScreenEnabled(screen, false)"
+            },
+            {
+                "name": "UiTextInput",
+                "description": "Renders an interactible UI text input",
+                "tags": ["Input", "String", "Boolean", "Size"],
+                "inputs": [
+                    {
+                        "name": "text",
+                        "type": "string",
+                        "description": "Text written in the input"
+                    },
+                    {
+                        "name": "width",
+                        "type": "number",
+                        "description": "Width of input"
+                    },
+                    {
+                        "name": "height",
+                        "type": "number",
+                        "description": "Height of input",
+                        "optional": true
+                    },
+                    {
+                        "name": "focus",
+                        "type": "boolean",
+                        "description": "If the element should be focused"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "text",
+                        "type": "string",
+                        "description": "Text written in the input"
+                    },
+                    {
+                        "name": "focus",
+                        "type": "boolean",
+                        "description": "Currently focused"
+                    }
+                ],
+                "example": "function init()\n   inputText = \"\"\nend\n\nfunction draw()\n   local inputFocus = false\n   local focus, text = UiTextInput(inputText, 200, 20, inputFocus)\n\n   inputText = text\nend",
+                "status": "undocumented, unconfirmed"
+            }
+        ]
+    }
+]
